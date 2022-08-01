@@ -1,12 +1,12 @@
 <template>
     <div class=" flex md:container md:mx-auto">
-        <div class="w-2/3 bg-lime-200">
+        <div class="md:w-2/3 bg-lime-200">
             <h1 class="text-blue-700 font-bold text-2xl text-center"> Display User Data </h1>
 
-            <input type="text"  @keyup="userFindByName(userName)" v-model="userName" id="userName" name="userName" placeholder="Find by Name" class="rounded-xl p-1 m-1">
+            <!-- <input type="text"  @keyup="userFindByName(userName)" v-model="userName" id="userName" name="userName" placeholder="Find by Name" class="rounded-xl p-1 m-1">
             <input type="text" @keyup="userFindByEmail(userEmail)" v-model="userEmail" id="userEmail" name="userEmail" placeholder="Find by Email" class="rounded-xl p-1 m-1">
-            <input type="number" @keyup="userFindByMobile(userMob)" v-model="userMob" id="userMob" name="userMob" placeholder="Find by Mob" class="rounded-xl p-1 m-1">
-            <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Find by Address" class="rounded-xl p-1 m-1">
+            <input type="number" @keyup="userFindByMobile(userMob)" v-model="userMob" id="userMob" name="userMob" placeholder="Find by Mob" class="rounded-xl p-1 m-1"> -->
+            <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1">
             <table  class="w-full border-1 m-3 border-stone-800">
                 <!-- v-show="allUserData.length>=1" -->
                 <tr class="border border-1 border-stone-800">
@@ -34,10 +34,10 @@
         <!-- <h1>Heelo2</h1> -->
         <!-- </div> -->
 
-        <div class="bg-blue-300 w-1/3" >
-            <h1 id="formName" class="text-blue text-3xl item-center font-bold">Add User</h1>
+        <div class="bg-blue-300  w-1/3" >
+            <h1 id="formName" class="text-blue Sm:text-3xl item-center font-bold ml-8">Add User</h1>
             <form method="post">
-                <table class="justify-between item-center">
+                <table class="ml-5  item-center">
                     <!-- Name -->
                     <tr>
                         <td>
@@ -130,6 +130,14 @@ export default {
             userAddress: '',
             userFound: [],
             uniqueEmail:[],
+            address1: '',
+            address2: '',
+            name1:'',
+            name2:'',
+            email1:'',
+            email2:'',
+            mobile1:'',
+            mobile2:'',
             // index: index + 1,
             allUserData : [],
             // i : 0,
@@ -156,8 +164,12 @@ export default {
                     console.log(e);
                     
                 }else{
-                    alert("Email Already Registered");
-                    this.resetForm();
+                    if(this.isEdit===true){
+                        this.allUserData[this.indexEdit]=this.userData;
+                    }else{
+                        alert("Email Already Registered");
+                        this.resetForm();
+                    }
                 }
             });
             
@@ -169,6 +181,7 @@ export default {
                
                 }
                 else{
+                    
                     // alert("unable to update");
                     if(this.userData.email== ''){
                             alert("Please enter unique Email Id")
@@ -283,7 +296,21 @@ export default {
             console.log(userAddress);
             this.userFound = this.allUserData.filter((e) => {
                 // if(e.address == userAddress)
-                if(e.address.startsWith(userAddress)){
+                this.address1 = userAddress.toLocaleLowerCase();
+                console.log(this.address1);
+                this.address2 = e.address.toLocaleLowerCase();
+
+                this.name1 = userAddress.toLocaleLowerCase();
+                this.name2 = e.name.toLocaleLowerCase();
+
+                this.email1 = userAddress.toLocaleLowerCase();
+                this.email2 = e.email.toLocaleLowerCase();
+
+                // this.mobile1 = userAddress.toLocaleLowerCase();
+                // this.mobile2 = e.mobile.toLocaleLowerCase();
+
+                if(this.address2.startsWith(this.address1) || this.name2.startsWith(this.name1) || this.email2.startsWith(this.email1)){
+                    // toLocaleLowerCase
                     console.log(e);
                     return e;
                     // alert("user Found" + e.firstName+ ""+e.lastName);
