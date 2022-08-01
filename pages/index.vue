@@ -7,7 +7,7 @@
             <input type="text" @keyup="userFindByEmail(userEmail)" v-model="userEmail" id="userEmail" name="userEmail" placeholder="Find by Email" class="rounded-xl p-1 m-1">
             <input type="number" @keyup="userFindByMobile(userMob)" v-model="userMob" id="userMob" name="userMob" placeholder="Find by Mob" class="rounded-xl p-1 m-1"> -->
             <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1">
-            <table  class="w-full border-1 m-3 border-stone-800">
+            <table  class="w-11/12 border-1 m-3 border-stone-800">
                 <!-- v-show="allUserData.length>=1" -->
                 <tr class="border border-1 border-stone-800">
                     <th class="border border-1 border-stone-800">Name</th>
@@ -34,17 +34,17 @@
         <!-- <h1>Heelo2</h1> -->
         <!-- </div> -->
 
-        <div class="bg-blue-300  w-1/3" >
-            <h1 id="formName" class="text-blue Sm:text-3xl item-center font-bold ml-8">Add User</h1>
+        <div class="bg-blue-300  sm:w-1/3" >
+            <h1 id="formName" class="text-blue sm:text-3xl item-center font-bold sm:ml-8">Add User</h1>
             <form method="post">
-                <table class="ml-5  item-center">
+                <table class="ml-5 m-2 sm:item-center">
                     <!-- Name -->
                     <tr>
                         <td>
                             <label for="name">Name</label>
                         </td>
                         <td>
-                            <input type="text" v-model="userData.name" name="name" id="name" placeholder="Name" class="rounded-xl p-1" required>
+                            <input type="text" v-model="userData.name" name="name" id="name" placeholder="Name" class="sm:rounded-xl sm:p-1" required>
                         </td>
                     </tr>
 
@@ -54,7 +54,7 @@
                             <label for="email">Email</label>
                         </td>
                         <td>
-                            <input type="email" v-model="userData.email" name="email" id="email" placeholder="Email" class="rounded-xl p-1" required>
+                            <input type="email" v-model="userData.email" name="email" id="email" placeholder="Email" class="sm:rounded-xl sm:p-1" required>
                         </td>
                     </tr>
 
@@ -64,7 +64,7 @@
                             <label for="mobile">Mobile</label>
                         </td>
                         <td>
-                            <input type="number" v-model="userData.mobile" name="mobile" id="moile" placeholder=" Mobile Number" class="rounded-xl p-1" required>
+                            <input type="number" v-model="userData.mobile" name="mobile" id="moile" placeholder=" Mobile No." class="sm:rounded-xl mr-5 sm:p-1" required>
                         </td>
                     </tr>
 
@@ -74,7 +74,7 @@
                             <label for="address">Address</label>
                         </td>
                         <td>
-                            <textarea name="address" v-model="userData.address" id="address" placeholder="Address" class="rounded-xl p-1"  rows="3" required></textarea>
+                            <textarea name="address" v-model="userData.address" id="address" placeholder="Address" class="sm:rounded-xl sm:p-1 "  rows="3" required></textarea>
                         </td>
                     </tr>
                     <!-- Buttons -->
@@ -248,48 +248,48 @@ export default {
             this.userData = { name:'',  email:'',mobile:'', address:'',};
         },
 
-        // Find user by Name in array
-        userFindByName(userName){         
-            console.log(userName);
-            this.userFound = this.allUserData.filter((e) => {
-                // if(e.name == userName)
-                if(e.name.startsWith(userName)){
-                    console.log(e);
-                    // if(e.name.startsWith(userName))
-                    return e;
-                    // alert("user Found" + e.firstName+ ""+e.lastName);
-                }
-            }); 
-            console.log(this.userFound);           
-        },
+        // // Find user by Name in array
+        // userFindByName(userName){         
+        //     console.log(userName);
+        //     this.userFound = this.allUserData.filter((e) => {
+        //         // if(e.name == userName)
+        //         if(e.name.startsWith(userName)){
+        //             console.log(e);
+        //             // if(e.name.startsWith(userName))
+        //             return e;
+                    
+        //         }
+        //     }); 
+        //     console.log(this.userFound);           
+        // },
 
-        // Find user by Email in array
-        userFindByEmail(userEmail){         
-            console.log(userEmail);
-            this.userFound = this.allUserData.filter((e) => {
-                // if(e.email == userEmail)
-                if(e.email.startsWith(userEmail)){
-                    console.log(e);
-                    return e;
-                    // alert("user Found" + e.firstName+ ""+e.lastName);
-                }
-            }); 
-            console.log(this.userFound);           
-        },
+        // // Find user by Email in array
+        // userFindByEmail(userEmail){         
+        //     console.log(userEmail);
+        //     this.userFound = this.allUserData.filter((e) => {
+        //         // if(e.email == userEmail)
+        //         if(e.email.startsWith(userEmail)){
+        //             console.log(e);
+        //             return e;
+        //             // alert("user Found" + e.firstName+ ""+e.lastName);
+        //         }
+        //     }); 
+        //     console.log(this.userFound);           
+        // },
 
-        // Find user by Mobile in array
-        userFindByMobile(userMob){         
-            console.log(userMob);
-            this.userFound = this.allUserData.filter((e) => {
-                if(e.mobile == userMob){
-                // if(e.mobile.startsWith(userMob)){
-                    console.log(e);
-                    return e;
-                    // alert("user Found" + e.firstName+ ""+e.lastName);
-                }
-            }); 
-            console.log(this.userFound);           
-        },
+        // // Find user by Mobile in array
+        // userFindByMobile(userMob){         
+        //     console.log(userMob);
+        //     this.userFound = this.allUserData.filter((e) => {
+        //         if(e.mobile == userMob){
+        //         // if(e.mobile.startsWith(userMob)){
+        //             console.log(e);
+        //             return e;
+        //             // alert("user Found" + e.firstName+ ""+e.lastName);
+        //         }
+        //     }); 
+        //     console.log(this.userFound);           
+        // },
         
         // Find user by Address in array
         userFindByAddress(userAddress){         
@@ -306,10 +306,10 @@ export default {
                 this.email1 = userAddress.toLocaleLowerCase();
                 this.email2 = e.email.toLocaleLowerCase();
 
-                // this.mobile1 = userAddress.toLocaleLowerCase();
-                // this.mobile2 = e.mobile.toLocaleLowerCase();
+                this.mobile1 = userAddress.toString();
+                this.mobile2 = e.mobile.toString();
 
-                if(this.address2.startsWith(this.address1) || this.name2.startsWith(this.name1) || this.email2.startsWith(this.email1)){
+                if(this.address2.startsWith(this.address1) || this.name2.startsWith(this.name1) || this.email2.startsWith(this.email1) || this.mobile2.startsWith(this.mobile1)  ){
                     // toLocaleLowerCase
                     console.log(e);
                     return e;
