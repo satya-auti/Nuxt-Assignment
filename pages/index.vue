@@ -6,7 +6,7 @@
             <!-- <input type="text"  @keyup="userFindByName(userName)" v-model="userName" id="userName" name="userName" placeholder="Find by Name" class="rounded-xl p-1 m-1">
             <input type="text" @keyup="userFindByEmail(userEmail)" v-model="userEmail" id="userEmail" name="userEmail" placeholder="Find by Email" class="rounded-xl p-1 m-1">
             <input type="number" @keyup="userFindByMobile(userMob)" v-model="userMob" id="userMob" name="userMob" placeholder="Find by Mob" class="rounded-xl p-1 m-1"> -->
-            <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1">
+            <!-- <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1"> -->
             <table  class="w-11/12 border-1 m-3 border-stone-800">
                 <!-- v-show="allUserData.length>=1" -->
                 <tr class="border border-1 border-stone-800">
@@ -23,8 +23,8 @@
                     <td class="border border-1 border-stone-800">{{user.email}}</td>
                     <td class="border border-1 border-stone-800">{{user.mobile}}</td>
                     <td class="border border-1 border-stone-800">{{user.address}}</td>
-                    <td class="border border-1 border-stone-800"><button @click="onEdit(i)" class="bg-black hover:bg-gray-800 p-1 px-2 rounded-lg text-white" id="edit" type="button">Edit</button></td>
-                    <td class="border border-1 border-stone-800"><button @click="deleteUser(i)" class="bg-black hover:bg-red-800 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td>
+                    <td class="border border-1 border-stone-800"><button @click="onEdit(i)" class="bg-black hover:bg-green-600 p-1 px-2 rounded-lg text-white" id="edit" type="button">Edit</button></td>
+                    <td class="border border-1 border-stone-800"><button @click="deleteUser(i)" class="bg-black hover:bg-red-700 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td>
                 </tr>
             </table>
             <!-- <div class="bg-blue-300 md:container w-1/3" > Hello div 2 -->
@@ -44,7 +44,7 @@
                             <label for="name">Name</label>
                         </td>
                         <td>
-                            <input type="text" v-model="userData.name" name="name" id="name" placeholder="Name" class="sm:rounded-xl sm:p-1" required>
+                            <input type="text" v-model="userData.name" name="name" id="name" @change="validationName" placeholder="Name" class="sm:rounded-xl sm:p-1" required='required'>
                         </td>
                     </tr>
 
@@ -54,7 +54,7 @@
                             <label for="email">Email</label>
                         </td>
                         <td>
-                            <input type="email" v-model="userData.email" name="email" id="email" placeholder="Email" class="sm:rounded-xl sm:p-1" required>
+                            <input type="email" v-model="userData.email" name="email" id="email" @change="validationEmail" placeholder="Email" class="sm:rounded-xl sm:p-1" required='required'>
                         </td>
                     </tr>
 
@@ -64,7 +64,7 @@
                             <label for="mobile">Mobile</label>
                         </td>
                         <td>
-                            <input type="number" v-model="userData.mobile" name="mobile" id="moile" placeholder=" Mobile No." class="sm:rounded-xl mr-5 sm:p-1" required>
+                            <input type="number" v-model="userData.mobile" name="mobile" id="mobile" @change="validationMobile" placeholder=" Mobile No." class="sm:rounded-xl mr-5 sm:p-1" required='required'>
                         </td>
                     </tr>
 
@@ -74,7 +74,7 @@
                             <label for="address">Address</label>
                         </td>
                         <td>
-                            <textarea name="address" v-model="userData.address" id="address" placeholder="Address" class="sm:rounded-xl sm:p-1 "  rows="3" required></textarea>
+                            <textarea name="address" v-model="userData.address" id="address" @change="validationAddress" placeholder="Address" class="sm:rounded-xl sm:p-1 "  rows="3" required='required'></textarea>
                         </td>
                     </tr>
                     <!-- Buttons -->
@@ -94,6 +94,28 @@
     </div>
     <hr class=" mt-4 border-4 border-orange-600">
     <div>
+        <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1">
+        <hr class=" mt-4 border-4 border-orange-600">
+
+        <table  class="w-full border-1 m-3 border-stone-800">
+                <!-- v-show="allUserData.length>=1" -->
+                <tr class="border border-1 border-stone-800">
+                    <!-- <th class="border border-1 border-stone-800">Name</th> -->
+                    <td>
+                        <!-- <select v-for="name in userFound">
+                            <option></option> -->
+                        <!-- </select> -->
+                    </td>
+                    <th class="border border-1 border-stone-800">Email</th>
+                    <th class="border border-1 border-stone-800">Mobile</th>
+                    <th class="border border-1 border-stone-800">Address</th>
+                    <!-- <th class="border border-1 border-stone-800" colspan="2">Action</th> -->
+                    
+                </tr>
+        </table>
+
+        <hr class=" mt-4 border-4 border-orange-600">
+
         <table  class="w-full border-1 m-3 border-stone-800">
                 <!-- v-show="allUserData.length>=1" -->
                 <tr class="border border-1 border-stone-800">
@@ -138,6 +160,7 @@ export default {
             email2:'',
             mobile1:'',
             mobile2:'',
+            emailMatch: '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/',
             // index: index + 1,
             allUserData : [],
             // i : 0,
@@ -156,7 +179,59 @@ export default {
         submitUserForm(event){
             event.preventDefault(event);
             console.log(this.userData);
+
+            //  //  // Validation for Name
+            // // if(this.userData.name==''){ 
+            // if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
+            //         alert("Please Enter Name");
+            //         // console.log("Please Enter Name");
+            //         this.resetForm();
+            // }else{
+            //     console.log(this.userData.name);
+            //         // alert("Name is valid");
+                    
+            // }
+
+            // // Validation for Email
+
+            //         // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.userData.email)){
+                 
+            //     this.emailMatch = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            //     // if(this.userData.email.matchAll(this.emailMatch)){
+            //     if(this.emailMatch.test(this.userData.email)){ 
+            //         // alert("Email is valid");
+            //         // console.log("Email is valid");
+            //     }else{
+            //         alert("Email is Invalid");
+            //         this.resetForm();
+            //     }
+
+
+            // // Validation for Mobile
+            // // If x is Not a Number or less than 10 digit or greater than 9999999999
+            // if (isNaN(this.userData.mobile) || this.userData.mobile < 1000000000 || this.userData.mobile > 9999999999) {
             
+            //     alert("Mobile Number is Invalid");
+            //     this.resetForm();
+            // } else {
+            //     // alert("Mobile Number is valid");
+            // }
+
+            
+            // //   // Validation for Address
+            // // if(this.userData.address!=''){ 
+            //     if(this.userData.address==null || this.userData.address==""){
+            //         alert("Please Enter Address");
+            //         // console.log("Please Enter Address");
+            //         this.resetForm();
+            // }else{
+            //         // alert("Address is valid");
+                    
+            // }
+
+           
+
+
             // Check Email id is unique or not
             this.uniqueEmail = this.allUserData.filter((e) => {
                 if(e.email != this.userData.email){
@@ -318,6 +393,68 @@ export default {
             }); 
             console.log(this.userFound);           
         },
+
+        //  // Validation for Name
+        validationName(){
+             //  // Validation for Name
+            // if(this.userData.name==''){ 
+            if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
+                    alert("Please Enter Name");
+                    // console.log("Please Enter Name");
+                    this.resetForm();
+            }else{
+                console.log(this.userData.name);
+                    // alert("Name is valid");
+                    
+            }
+        },
+
+        // Validation for Email
+        validationEmail(){
+
+                    // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.userData.email)){
+                 
+                this.emailMatch = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                // if(this.userData.email.matchAll(this.emailMatch)){
+                if(this.emailMatch.test(this.userData.email)){ 
+                    // alert("Email is valid");
+                    // console.log("Email is valid");
+                }else{
+                    alert("Email is Invalid");
+                    this.resetForm();
+                }
+        },
+
+        // Validation for Mobile
+        validationMobile(){
+            // Validation for Mobile
+            // If x is Not a Number or less than 10 digit or greater than 9999999999
+            if (isNaN(this.userData.mobile) || this.userData.mobile < 1000000000 || this.userData.mobile > 9999999999) {
+            
+                alert("Mobile Number is Invalid");
+                this.resetForm();
+            } else {
+                // alert("Mobile Number is valid");
+            }
+
+        },
+
+        //   // Validation for Address
+        validationAddress(){
+            //   // Validation for Address
+            // if(this.userData.address!=''){ 
+                if(this.userData.address==null || this.userData.address=="" ){
+                    // this.userData.address2.length<6
+                    alert("Please Enter Address");
+                    // console.log("Please Enter Address");
+                    this.resetForm();
+            }else{
+                    // alert("Address is valid");
+                    
+            }
+        },
+
+
     }
 }
 
