@@ -1,13 +1,13 @@
 <template>
-    <div class=" flex md:container md:mx-auto">
-        <div class="md:w-2/3 bg-lime-200">
+    <div class=" flex md:container sm:mx-auto md:mx-auto">
+        <div class="md:w-2/3 sm:w-2/3 bg-lime-200">
             <h1 class="text-blue-700 font-bold text-2xl text-center"> Display User Data </h1>
 
             <!-- <input type="text"  @keyup="userFindByName(userName)" v-model="userName" id="userName" name="userName" placeholder="Find by Name" class="rounded-xl p-1 m-1">
             <input type="text" @keyup="userFindByEmail(userEmail)" v-model="userEmail" id="userEmail" name="userEmail" placeholder="Find by Email" class="rounded-xl p-1 m-1">
             <input type="number" @keyup="userFindByMobile(userMob)" v-model="userMob" id="userMob" name="userMob" placeholder="Find by Mob" class="rounded-xl p-1 m-1"> -->
             <!-- <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1"> -->
-            <table  class="w-11/12 border-1 m-3 border-stone-800">
+            <table  class="sm:w-11/12 md:w-11/12 border-1 m-3 border-stone-800">
                 <!-- v-show="allUserData.length>=1" -->
                 <tr class="border border-1 border-stone-800">
                     <th class="border border-1 border-stone-800">Name</th>
@@ -34,7 +34,7 @@
         <!-- <h1>Heelo2</h1> -->
         <!-- </div> -->
 
-        <div class="bg-blue-300  sm:w-1/3" >
+        <div class="bg-blue-300 md:w-1/3 sm:w-1/3" >
             <h1 id="formName" class="text-blue sm:text-3xl item-center font-bold sm:ml-8">Add User</h1>
             <form method="post">
                 <table class="ml-5 m-2 sm:item-center">
@@ -160,6 +160,7 @@ export default {
             email2:'',
             mobile1:'',
             mobile2:'',
+            nameMatch: '/^[A-Za-z\s]+$/',
             emailMatch: '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/',
             // index: index + 1,
             allUserData : [],
@@ -398,7 +399,10 @@ export default {
         validationName(){
              //  // Validation for Name
             // if(this.userData.name==''){ 
-            if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
+                this.nameMatch = /^[A-Za-z\s]+$/;
+                // !this.nameMatch.test(this.userData.name) || 
+            if(!this.nameMatch.test(this.userData.name) || !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
+            // if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
                     alert("Please Enter Name");
                     // console.log("Please Enter Name");
                     this.resetForm();
