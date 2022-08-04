@@ -1,13 +1,19 @@
 <template>
-    <div class=" flex md:container sm:mx-auto md:mx-auto">
-        <div class="md:w-2/3 sm:w-2/3 bg-lime-200">
-            <h1 class="text-blue-700 font-bold text-2xl text-center"> Display User Data </h1>
+    <div class=" sm:flex md:container sm:mx-auto md:mx-auto">
+        <div class="md:w-2/3 sm:w-2/3 border-4 items-center border-r-0 border-gray-600 bg-gray-300">
+            <h1 class="bg-black text-white p-1 font-bold text-2xl text-center"> Display User Data </h1>
+            <input  type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
+            <p class="sm:pl-5 text-red-700">
+                !!!...Data filtered only if it is matching with starting character...!!!
+            </p>
+            <hr class=" sm:mt-4 border-4 border-orange-600">
 
             <!-- <input type="text"  @keyup="userFindByName(userName)" v-model="userName" id="userName" name="userName" placeholder="Find by Name" class="rounded-xl p-1 m-1">
             <input type="text" @keyup="userFindByEmail(userEmail)" v-model="userEmail" id="userEmail" name="userEmail" placeholder="Find by Email" class="rounded-xl p-1 m-1">
             <input type="number" @keyup="userFindByMobile(userMob)" v-model="userMob" id="userMob" name="userMob" placeholder="Find by Mob" class="rounded-xl p-1 m-1"> -->
             <!-- <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1"> -->
-            <table  class="sm:w-11/12 md:w-11/12 border-1 m-3 border-stone-800">
+            {{showUsers()}}
+            <table  class="sm:w-11/12 md:w-11/12 border-2 text-center sm:m-3 border-stone-800">
                 <!-- v-show="allUserData.length>=1" -->
                 <tr class="border border-1 border-stone-800">
                     <th class="border border-1 border-stone-800">Name</th>
@@ -18,14 +24,26 @@
                     
                 </tr>
 
-                <tr v-for="(user, i) in allUserData" :key="user" >
+                <tr v-for="(user, i) in userFound" :key="user" >
+                <!-- <tr v-for="(user, i) in allUserData" :key="user" > -->
+
+                    <td class="border border-1 border-stone-800">{{user.name}}</td>
+                    <td class="border border-1 border-stone-800">{{user.email}}</td>
+                    <td class="border border-1 border-stone-800">{{user.mobile}}</td>
+                    <td class="border border-1 border-stone-800">{{user.address}}</td>
+                    <td class="border border-1 border-stone-800"><button @click="onEdit(i)" class="bg-black hover:bg-green-600 p-1 px-2 rounded-lg text-white" id="edit" type="button">Edit</button></td>
+                    <td class="border border-1 border-stone-800"><button @click="deleteUser(i)" class="bg-black hover:bg-red-600 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td>
+                </tr>
+
+                <!-- <tr v-for="(user, i) in userInfo" :key="user" >
                     <td class="border border-1 border-stone-800">{{user.name}}</td>
                     <td class="border border-1 border-stone-800">{{user.email}}</td>
                     <td class="border border-1 border-stone-800">{{user.mobile}}</td>
                     <td class="border border-1 border-stone-800">{{user.address}}</td>
                     <td class="border border-1 border-stone-800"><button @click="onEdit(i)" class="bg-black hover:bg-green-600 p-1 px-2 rounded-lg text-white" id="edit" type="button">Edit</button></td>
                     <td class="border border-1 border-stone-800"><button @click="deleteUser(i)" class="bg-black hover:bg-red-700 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td>
-                </tr>
+                </tr> -->
+
             </table>
             <!-- <div class="bg-blue-300 md:container w-1/3" > Hello div 2 -->
 
@@ -34,17 +52,20 @@
         <!-- <h1>Heelo2</h1> -->
         <!-- </div> -->
 
-        <div class="bg-blue-300 md:w-1/3 sm:w-1/3" >
-            <h1 id="formName" class="text-blue sm:text-3xl item-center font-bold sm:ml-8">Add User</h1>
+        <div class="bg-gray-300 border-4  justify-around j border-l-1 border-gray-700 md:w-1/3  sm:w-1/3" >
+            
             <form method="post">
-                <table class="ml-5 m-2 sm:item-center">
+                <table class="sm:ml-16 items-center m-2 sm:item-center">
+                    <caption>
+                        <h1 id="formName" class="text-blue text-center sm:text-3xl font-bold sm:ml-8">Add User</h1>
+                    </caption>
                     <!-- Name -->
                     <tr>
                         <td>
                             <label for="name">Name</label>
                         </td>
                         <td>
-                            <input type="text" v-model="userData.name" name="name" id="name" @change="validationName" placeholder="Name" class="sm:rounded-xl sm:p-1" required='required'>
+                            <input type="text" v-model="userData.name" name="name" id="name" @change="validationName" placeholder="Name" class="sm:rounded-xl m-1 sm:p-1" required='required'>
                         </td>
                     </tr>
 
@@ -54,7 +75,7 @@
                             <label for="email">Email</label>
                         </td>
                         <td>
-                            <input type="email" v-model="userData.email" name="email" id="email" @change="validationEmail" placeholder="Email" class="sm:rounded-xl sm:p-1" required='required'>
+                            <input type="email" v-model="userData.email" name="email" id="email" @change="validationEmail" placeholder="Email" class="sm:rounded-xl m-1 sm:p-1" required='required'>
                         </td>
                     </tr>
 
@@ -74,16 +95,16 @@
                             <label for="address">Address</label>
                         </td>
                         <td>
-                            <textarea name="address" v-model="userData.address" id="address" @change="validationAddress" placeholder="Address" class="sm:rounded-xl sm:p-1 "  rows="3" required='required'></textarea>
+                            <textarea name="address" v-model="userData.address" id="address" @change="validationAddress" placeholder="Address" class="sm:rounded-xl m-1 sm:p-1 "  rows="3" required='required'></textarea>
                         </td>
                     </tr>
                     <!-- Buttons -->
                     <tr>
                         <td>
-                            <button @click="submitUserForm" class="bg-black hover:bg-gray-800 p-1 px-2 rounded-lg text-white" id="submit" type="submit">Submit</button>
+                            <button @click="submitUserForm" class="bg-black hover:bg-blue-600 p-1 px-2 rounded-lg text-white" id="submit" type="submit">Submit</button>
                         </td>
                         <td>
-                            <button @click="resetForm" class="bg-black hover:bg-gray-800 p-1 px-2 rounded-lg text-white" id="reset" type="reset">Reset</button>
+                            <button @click="resetForm" class="bg-black hover:bg-red-600 p-1 px-2 rounded-lg text-white" id="reset" type="reset">Reset</button>
                         </td>
                     </tr>
 
@@ -94,48 +115,48 @@
     </div>
     <hr class=" mt-4 border-4 border-orange-600">
     <div>
-        <input type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl px-5 p-1 m-1">
-        <hr class=" mt-4 border-4 border-orange-600">
+        <!-- <input  type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
+        <hr class=" sm:mt-4 border-4 border-orange-600"> -->
 
-        <table  class="w-full border-1 m-3 border-stone-800">
+        <!-- <table  class="sm:w-auto md:w-auto border-1 m-3 border-stone-800"> -->
                 <!-- v-show="allUserData.length>=1" -->
-                <tr class="border border-1 border-stone-800">
+                <!-- <tr class="border border-1 border-stone-800"> -->
                     <!-- <th class="border border-1 border-stone-800">Name</th> -->
-                    <td>
+                    <!-- <td> -->
                         <!-- <select v-for="name in userFound">
                             <option></option> -->
                         <!-- </select> -->
-                    </td>
+                    <!-- </td>
                     <th class="border border-1 border-stone-800">Email</th>
                     <th class="border border-1 border-stone-800">Mobile</th>
-                    <th class="border border-1 border-stone-800">Address</th>
+                    <th class="border border-1 border-stone-800">Address</th> -->
                     <!-- <th class="border border-1 border-stone-800" colspan="2">Action</th> -->
                     
-                </tr>
-        </table>
+                <!-- </tr>
+        </table> -->
 
-        <hr class=" mt-4 border-4 border-orange-600">
+        <!-- <hr class="md:mt-4 sm:mt-4 border-4 border-orange-600"> -->
 
-        <table  class="w-full border-1 m-3 border-stone-800">
+        <!-- <table  class="sm:w-auto text-center md:w-auto border-1 sm:m-3 border-stone-800"> -->
                 <!-- v-show="allUserData.length>=1" -->
-                <tr class="border border-1 border-stone-800">
+                <!-- <tr class="border border-1 border-stone-800">
                     <th class="border border-1 border-stone-800">Name</th>
                     <th class="border border-1 border-stone-800">Email</th>
                     <th class="border border-1 border-stone-800">Mobile</th>
-                    <th class="border border-1 border-stone-800">Address</th>
+                    <th class="border border-1 border-stone-800">Address</th> -->
                     <!-- <th class="border border-1 border-stone-800" colspan="2">Action</th> -->
                     
-                </tr>
+                <!-- </tr>
 
                 <tr v-for="item in userFound" :key="item" >
                     <td class="border border-1 border-stone-800">{{item.name}}</td>
                     <td class="border border-1 border-stone-800">{{item.email}}</td>
                     <td class="border border-1 border-stone-800">{{item.mobile}}</td>
-                    <td class="border border-1 border-stone-800">{{item.address}}</td>
+                    <td class="border border-1 border-stone-800">{{item.address}}</td> -->
                     <!-- <td class="border border-1 border-stone-800"><button @click="onEdit(i)" class="bg-black hover:bg-gray-800 p-1 px-2 rounded-lg text-white" id="edit" type="button">Edit</button></td> -->
                     <!-- <td class="border border-1 border-stone-800"><button @click="deleteUser(i)" class="bg-black hover:bg-red-800 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td> -->
-                </tr>
-            </table>
+                <!-- </tr>
+            </table> -->
     </div>
 </template>
 
@@ -152,6 +173,7 @@ export default {
             userAddress: '',
             userFound: [],
             uniqueEmail:[],
+            userInfo:[],
             address1: '',
             address2: '',
             name1:'',
@@ -177,21 +199,31 @@ export default {
         }
     },
     methods: {
+        showUsers(){
+            // this.allUserData = JSON.parse(sessionStorage.getItem('selectedUser')); // To get  
+            // this.allUserData = JSON.parse(localStorage.getItem('selectedUser')); // To get  
+
+            if(this.userAddress == ''){ 
+                     this.userFound = this.allUserData;
+                    // .filter(user => user.category === this.selectedCategory);
+                    // return this.products.filter(user => user.category === this.selectedCategory);
+                }
+        },
         submitUserForm(event){
             event.preventDefault(event);
             console.log(this.userData);
-
+               
             //  //  // Validation for Name
             // // if(this.userData.name==''){ 
-            // if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
-            //         alert("Please Enter Name");
+            if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
+                    alert("Please Enter Name");
             //         // console.log("Please Enter Name");
-            //         this.resetForm();
-            // }else{
+                    // this.resetForm();
+            }else{
             //     console.log(this.userData.name);
             //         // alert("Name is valid");
                     
-            // }
+            }
 
             // // Validation for Email
 
@@ -210,25 +242,37 @@ export default {
 
             // // Validation for Mobile
             // // If x is Not a Number or less than 10 digit or greater than 9999999999
-            // if (isNaN(this.userData.mobile) || this.userData.mobile < 1000000000 || this.userData.mobile > 9999999999) {
+            if (isNaN(this.userData.mobile) || this.userData.mobile < 1000000000 || this.userData.mobile > 9999999999 || this.userData.mobile==null || this.userData.mobile=="") {
             
-            //     alert("Mobile Number is Invalid");
-            //     this.resetForm();
-            // } else {
+                alert("Mobile Number is Invalid");
+                // this.resetForm();
+            } else {
             //     // alert("Mobile Number is valid");
-            // }
+            }
 
             
             // //   // Validation for Address
             // // if(this.userData.address!=''){ 
-            //     if(this.userData.address==null || this.userData.address==""){
-            //         alert("Please Enter Address");
+            if(this.userData.address==null || this.userData.address==""){
+                    alert("Please Enter Address");
             //         // console.log("Please Enter Address");
-            //         this.resetForm();
-            // }else{
+                    // this.resetForm();
+            }else{
             //         // alert("Address is valid");
                     
-            // }
+            }
+
+            // All Check
+            if(this.userData.name=='' || this.userData.email=="" ||this.userData.mobile=='' || this.userData.address==""){
+                    alert("Please Enter Data Correctly");
+            //         // console.log("Please Enter Address");
+                    this.resetForm();
+            }else{
+            //         // alert("Address is valid");
+                    
+            }
+
+            
 
            
 
@@ -264,6 +308,8 @@ export default {
                     }else{
 
                         this.allUserData.push(this.userData);
+                        // sessionStorage.setItem('selectedUser', JSON.stringify(this.allUserData)); // To Set
+                        // localStorage.setItem('selectedUser', JSON.stringify(this.allUserData)); // To Set
                     }
                 }
            
@@ -302,6 +348,7 @@ export default {
         deleteUser(index){
             console.log(index);
             this.allUserData.splice(index, 1);
+            this.userFound.splice(index,1);
 
             const formHead = document.getElementById('formName');
             formHead.innerText = 'Add User';
@@ -391,8 +438,17 @@ export default {
                     return e;
                     // alert("user Found" + e.firstName+ ""+e.lastName);
                 }
+                if(userAddress == ''){ 
+                     this.userFound = this.allUserData;
+                    // .filter(user => user.category === this.selectedCategory);
+                    // return this.products.filter(user => user.category === this.selectedCategory);
+                }
+            
+                // return this.products;
             }); 
-            console.log(this.userFound);           
+            console.log(this.userFound);  
+            //   this.allUserData = JSON.parse(sessionStorage.getItem('selectedUser')); // To get    
+              console.log(" user Info : ", this.userInfo);     
         },
 
         //  // Validation for Name
@@ -452,10 +508,10 @@ export default {
                     alert("Please Enter Address");
                     // console.log("Please Enter Address");
                     this.resetForm();
-            }else{
+                }else{
                     // alert("Address is valid");
                     
-            }
+                }
         },
 
 
