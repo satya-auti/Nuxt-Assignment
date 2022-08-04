@@ -2,7 +2,7 @@
     <div class=" sm:flex md:container sm:mx-auto md:mx-auto">
         <div class="md:w-2/3 sm:w-2/3 border-4 items-center border-r-0 border-gray-600 bg-gray-300">
             <h1 class="bg-black text-white p-1 font-bold text-2xl text-center"> Display User Data </h1>
-            <input  type="text" @keyup="userFindByAll(userInput)" v-model="userInput" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
+            <input  type="text" @keyup="userFindByAll(userInput)" v-model="userInput" id="userInput" name="userInput" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
             <p class="sm:pl-5 text-red-700">
                 !!!...Data filtered only if it is matching with starting character...!!!
             </p>
@@ -32,7 +32,7 @@
                     <td class="border border-1 border-stone-800">{{user.mobile}}</td>
                     <td class="border border-1 border-stone-800">{{user.address}}</td>
                     <td class="border border-1 border-stone-800"><button @click="onEdit(i)" class="bg-black hover:bg-green-600 p-1 px-2 rounded-lg text-white" id="edit" type="button">Edit</button></td>
-                    <td class="border border-1 border-stone-800"><button @click="deleteUser(i)" class="bg-black hover:bg-red-600 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td>
+                    <td v-if="deleteDisabled==true" class="border border-1 border-stone-800"><button  @click="deleteUser(i)" class="bg-black hover:bg-red-600 p-1 px-2 rounded-lg text-white" id="delete" type="button">Delete</button></td>
                 </tr>
 
                 <!-- <tr v-for="(user, i) in userInfo" :key="user" >
@@ -85,7 +85,7 @@
                             <label for="mobile">Mobile</label>
                         </td>
                         <td>
-                            <input type="number" v-model="userData.mobile" name="mobile" id="mobile" @change="validationMobile" placeholder=" Mobile No." class="sm:rounded-xl mr-5 sm:p-1" required='required'>
+                            <input type="number" v-model="userData.mobile" name="mobile" id="mobile" @change="validationMobile" placeholder=" Mobile No." class="sm:rounded-xl m-1 sm:p-1" required='required'>
                         </td>
                     </tr>
 
@@ -101,6 +101,7 @@
                     <!-- Buttons -->
                     <tr>
                         <td>
+                            <!-- ValidationNotNull -->
                             <button @click="submitUserForm" class="bg-black hover:bg-blue-600 p-1 px-2 rounded-lg text-white" id="submit" type="submit">Submit</button>
                         </td>
                         <td>
@@ -143,6 +144,8 @@
 </template>
 
 <script>
+
+
 export default {
     data(){
         
@@ -152,6 +155,7 @@ export default {
             userName: '',
             userEmail: '',  
             userMob: '',
+            deleteDisabled: true,
             // userAddress: '',
             userInput: '',
             userFound: [],
@@ -193,7 +197,7 @@ export default {
         submitUserForm(event){
             event.preventDefault(event);
             console.log(this.userData);
-               
+               this.validationNotNull();
             //  //  // Validation for Name
             if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
                     alert("Please Enter Name");
@@ -209,7 +213,7 @@ export default {
             // // If x is Not a Number or less than 10 digit or greater than 9999999999
             if (isNaN(this.userData.mobile) || this.userData.mobile < 1000000000 || this.userData.mobile > 9999999999 || this.userData.mobile==null || this.userData.mobile=="") {
             
-                alert("Mobile Number is Invalid");
+                alert("Please enter valid Mobile Number.");
                 // this.resetForm();
             } else {
             //     // alert("Mobile Number is valid");
@@ -226,14 +230,14 @@ export default {
             }
 
             // All Check
-            if(this.userData.name=='' || this.userData.email=="" ||this.userData.mobile=='' || this.userData.address==""){
-                    alert("Please Enter Data Correctly");
-            //         // console.log("Please Enter Address");
-                    this.resetForm();
-            }else{
-            //         // alert("Address is valid");
+            // if(this.userData.name=='' || this.userData.email=="" ||this.userData.mobile=='' || this.userData.address==""){
+            //         alert("Please Enter Data Correctly");
+            // //         // console.log("Please Enter Address");
+            //         this.resetForm();
+            // }else{
+            // //         // alert("Address is valid");
                     
-            }
+            // }
 
 
             // Check Email id is unique or not
@@ -254,6 +258,7 @@ export default {
             
 
                 if(this.isEdit===true){
+                    this.deleteDisabled = false;
                     this.allUserData[this.indexEdit]=this.userData;
                     this.isEdit=false;
                     this.indexEdit = -1;
@@ -306,8 +311,15 @@ export default {
         // Delete user from array
         deleteUser(index){
             console.log(index);
-            // this.allUserData.splice(index, 1);
-            this.userFound.splice(index,1);
+            if(this.isEdit==true){
+                alert("@ this time your not allowed to delete");
+            }else{
+                // this.allUserData.splice(index, 1);
+                this.userFound.splice(index,1);
+            }
+            
+
+            // this.resetForm();
 
             const formHead = document.getElementById('formName');
             formHead.innerText = 'Add User';
@@ -470,6 +482,18 @@ export default {
                     // alert("Address is valid");
                     
                 }
+        },
+
+        validationNotNull(){
+            if(this.userData.name=='' || this.userData.email=="" ||this.userData.mobile=='' || this.userData.address==""){
+                    alert("Please Enter Data Correctly");
+                                    
+            //         // console.log("Please Enter Address");
+                    // this.resetForm();
+            }else{
+            //         // alert("Address is valid");
+                    // submitUserForm();
+            }
         },
 
 
