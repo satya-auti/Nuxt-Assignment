@@ -2,7 +2,7 @@
     <div class=" sm:flex md:container sm:mx-auto md:mx-auto">
         <div class="md:w-2/3 sm:w-2/3 border-4 items-center border-r-0 border-gray-600 bg-gray-300">
             <h1 class="bg-black text-white p-1 font-bold text-2xl text-center"> Display User Data </h1>
-            <input  type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
+            <input  type="text" @keyup="userFindByAll(userInput)" v-model="userInput" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
             <p class="sm:pl-5 text-red-700">
                 !!!...Data filtered only if it is matching with starting character...!!!
             </p>
@@ -115,26 +115,8 @@
     </div>
     <hr class=" mt-4 border-4 border-orange-600">
     <div>
-        <!-- <input  type="text" @keyup="userFindByAddress(userAddress)" v-model="userAddress" id="userName" name="userAddress" placeholder="Search for Anything" class="rounded-xl ring-4 ring-stone-500 focus:ring-neutral-700 justify-center px-5 p-1 m-3">
+       
         <hr class=" sm:mt-4 border-4 border-orange-600"> -->
-
-        <!-- <table  class="sm:w-auto md:w-auto border-1 m-3 border-stone-800"> -->
-                <!-- v-show="allUserData.length>=1" -->
-                <!-- <tr class="border border-1 border-stone-800"> -->
-                    <!-- <th class="border border-1 border-stone-800">Name</th> -->
-                    <!-- <td> -->
-                        <!-- <select v-for="name in userFound">
-                            <option></option> -->
-                        <!-- </select> -->
-                    <!-- </td>
-                    <th class="border border-1 border-stone-800">Email</th>
-                    <th class="border border-1 border-stone-800">Mobile</th>
-                    <th class="border border-1 border-stone-800">Address</th> -->
-                    <!-- <th class="border border-1 border-stone-800" colspan="2">Action</th> -->
-                    
-                <!-- </tr>
-        </table> -->
-
         <!-- <hr class="md:mt-4 sm:mt-4 border-4 border-orange-600"> -->
 
         <!-- <table  class="sm:w-auto text-center md:w-auto border-1 sm:m-3 border-stone-800"> -->
@@ -170,7 +152,8 @@ export default {
             userName: '',
             userEmail: '',  
             userMob: '',
-            userAddress: '',
+            // userAddress: '',
+            userInput: '',
             userFound: [],
             uniqueEmail:[],
             userInfo:[],
@@ -203,10 +186,8 @@ export default {
             // this.allUserData = JSON.parse(sessionStorage.getItem('selectedUser')); // To get  
             // this.allUserData = JSON.parse(localStorage.getItem('selectedUser')); // To get  
 
-            if(this.userAddress == ''){ 
+            if(this.userInput == ''){ 
                      this.userFound = this.allUserData;
-                    // .filter(user => user.category === this.selectedCategory);
-                    // return this.products.filter(user => user.category === this.selectedCategory);
                 }
         },
         submitUserForm(event){
@@ -214,7 +195,6 @@ export default {
             console.log(this.userData);
                
             //  //  // Validation for Name
-            // // if(this.userData.name==''){ 
             if( !isNaN(this.userData.name) || this.userData.name==null || this.userData.name==""){
                     alert("Please Enter Name");
             //         // console.log("Please Enter Name");
@@ -224,21 +204,6 @@ export default {
             //         // alert("Name is valid");
                     
             }
-
-            // // Validation for Email
-
-            //         // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.userData.email)){
-                 
-            //     this.emailMatch = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            //     // if(this.userData.email.matchAll(this.emailMatch)){
-            //     if(this.emailMatch.test(this.userData.email)){ 
-            //         // alert("Email is valid");
-            //         // console.log("Email is valid");
-            //     }else{
-            //         alert("Email is Invalid");
-            //         this.resetForm();
-            //     }
-
 
             // // Validation for Mobile
             // // If x is Not a Number or less than 10 digit or greater than 9999999999
@@ -252,10 +217,8 @@ export default {
 
             
             // //   // Validation for Address
-            // // if(this.userData.address!=''){ 
             if(this.userData.address==null || this.userData.address==""){
                     alert("Please Enter Address");
-            //         // console.log("Please Enter Address");
                     // this.resetForm();
             }else{
             //         // alert("Address is valid");
@@ -271,10 +234,6 @@ export default {
             //         // alert("Address is valid");
                     
             }
-
-            
-
-           
 
 
             // Check Email id is unique or not
@@ -347,7 +306,7 @@ export default {
         // Delete user from array
         deleteUser(index){
             console.log(index);
-            this.allUserData.splice(index, 1);
+            // this.allUserData.splice(index, 1);
             this.userFound.splice(index,1);
 
             const formHead = document.getElementById('formName');
@@ -415,36 +374,35 @@ export default {
         // },
         
         // Find user by Address in array
-        userFindByAddress(userAddress){         
-            console.log(userAddress);
+        userFindByAll(userInput){         
+            console.log(userInput);
             this.userFound = this.allUserData.filter((e) => {
-                // if(e.address == userAddress)
-                this.address1 = userAddress.toLocaleLowerCase();
+                // if(e.address == userInput)
+                this.address1 = userInput.toLocaleLowerCase();
                 console.log(this.address1);
                 this.address2 = e.address.toLocaleLowerCase();
 
-                this.name1 = userAddress.toLocaleLowerCase();
+                this.name1 = userInput.toLocaleLowerCase();
                 this.name2 = e.name.toLocaleLowerCase();
 
-                this.email1 = userAddress.toLocaleLowerCase();
+                this.email1 = userInput.toLocaleLowerCase();
                 this.email2 = e.email.toLocaleLowerCase();
 
-                this.mobile1 = userAddress.toString();
+                this.mobile1 = userInput.toString();
                 this.mobile2 = e.mobile.toString();
 
                 if(this.address2.startsWith(this.address1) || this.name2.startsWith(this.name1) || this.email2.startsWith(this.email1) || this.mobile2.startsWith(this.mobile1)  ){
                     // toLocaleLowerCase
                     console.log(e);
                     return e;
-                    // alert("user Found" + e.firstName+ ""+e.lastName);
+                   
                 }
-                if(userAddress == ''){ 
+                if(userInput == ''){ 
                      this.userFound = this.allUserData;
-                    // .filter(user => user.category === this.selectedCategory);
-                    // return this.products.filter(user => user.category === this.selectedCategory);
+                  
                 }
             
-                // return this.products;
+                
             }); 
             console.log(this.userFound);  
             //   this.allUserData = JSON.parse(sessionStorage.getItem('selectedUser')); // To get    
