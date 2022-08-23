@@ -354,7 +354,7 @@ export default {
           }
         }
       });
-
+      // check while editing that user cannot delete data
       if (this.isEdit === true) {
         this.deleteDisabled = false;
         this.allUserData[this.indexEdit] = this.userData;
